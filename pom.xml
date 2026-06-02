@@ -40,7 +40,7 @@
 
     <build>
 
-        <testSourceDirectory>${project.basedir}/src/tests/java</testSourceDirectory>
+        <testSourceDirectory>${project.basedir}/src</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

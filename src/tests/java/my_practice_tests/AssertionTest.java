@@ -107,12 +107,12 @@ public class AssertionTest {
 
         assertThat(deleteBttn).hasCount(3);
 
-        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Delete")).filter().nth(0).click();
+        deleteBttn.first().click();
         assertThat(deleteBttn).hasCount(2);
 
         int i = 0;
         while (i < 2) {
-            page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Delete")).filter().nth(0).click();
+            deleteBttn.first().click();
             i++;
         }
 
@@ -136,8 +136,8 @@ public class AssertionTest {
                 .locator("b")
                 .textContent();
 
-        page.getByRole(AriaRole.TEXTBOX).and(page.getByLabel("Username")).fill(userName);
-        page.getByRole(AriaRole.TEXTBOX).and(page.getByLabel("Password")).fill(password);
+        page.getByLabel("Username").fill(userName);
+        page.getByLabel("Password").fill(password);
         page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Login")).click();
 
         assertThat(page).hasURL("https://practice.expandtesting.com/secure");
@@ -145,7 +145,11 @@ public class AssertionTest {
 
         assertThat(page.locator("#flash")).containsText("You logged into a secure area!");
         assertThat(page.locator("#username")).containsText("Hi, " + userName);
-        assertThat(page.locator("//*[@id=\"core\"]/div/div"))
+        // assertThat(page.locator("//*[@id=\"core\"]/div/div"))
+        // .containsText("Welcome to the Secure Area. When you are done click logout
+        // below.");
+
+        assertThat(page.getByRole(AriaRole.HEADING, new GetByRoleOptions().setLevel(4)))
                 .containsText("Welcome to the Secure Area. When you are done click logout below.");
     }
 
@@ -173,15 +177,15 @@ public class AssertionTest {
     void wrongLogin() {
         page.navigate("https://practice.expandtesting.com/login");
 
-        page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("practice");
-        page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Password")).fill("practice");
+        page.getByLabel(("Username")).fill("practice");
+        page.getByLabel(("Password")).fill("practice");
         page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Login")).click();
 
         assertThat(page).not().hasURL(Pattern.compile(".*/secure"));
         assertThat(page.locator("#flash")).containsText("Your password is invalid!");
 
-        page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("practice");
-        page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Password")).fill("SuperSecretPassword!");
+        page.getByLabel(("Username")).fill("practice");
+        page.getByLabel(("Password")).fill("SuperSecretPassword!");
         page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Login")).click();
 
         assertThat(page).hasURL(Pattern.compile(".*/secure"));

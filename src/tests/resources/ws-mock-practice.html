@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WS Mock Practice</title>
+</head>
+<body>
+    <h1>WebSocket Mock Test Page</h1>
+    <p>Last received message:</p>
+    <div id="output">waiting...</div>
+
+    <script>
+        // open a connection to a public echo server
+        const ws = new WebSocket("wss://echo.websocket.org");
+
+        const output = document.getElementById("output");
+
+        ws.onopen = () => {
+            // send something once connected
+            ws.send("hello from page");
+        };
+
+        ws.onmessage = (event) => {
+            // write whatever the server sent into the DOM
+            output.textContent = event.data;
+        };
+
+        ws.onerror = () => {
+            output.textContent = "connection error";
+        };
+    </script>
+</body>
+</html>

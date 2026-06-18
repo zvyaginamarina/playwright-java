@@ -44,6 +44,8 @@ public class ErrorAndExceptionsTest {
         browser = playwright.chromium().launch(new LaunchOptions().setHeadless(false));
     }
 
+    // сброс кеша для контекста не решил проблему падения тестов при обзем запуске,
+    // попробовать создавать изолированный браузер для каждого теста
     @BeforeEach
     void contextSetUp() {
         context = browser.newContext(new NewContextOptions()

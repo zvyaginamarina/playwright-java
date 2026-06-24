@@ -6,7 +6,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 
-public class IphoneEmulationTest extends BaseTest {
+public class IphoneEmulationTest extends BasicTest {
 
     @Test
     void testDeviceEmulation() {

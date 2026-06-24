@@ -6,7 +6,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 
-public class UserAgentTest extends BaseTest {
+public class UserAgentTest extends BasicTest {
 
     @Test
     void testUserAgent() {

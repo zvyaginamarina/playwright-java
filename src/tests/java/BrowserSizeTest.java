@@ -2,7 +2,7 @@ package tests.java;
 
 import org.junit.jupiter.api.Test;
 
-public class BrowserSizeTest extends BaseTest {
+public class BrowserSizeTest extends BasicTest {
     @Test
     void testBrowserSize() {
         page.setViewportSize(1280, 720);

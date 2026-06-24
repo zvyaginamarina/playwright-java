@@ -8,10 +8,10 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
-public class BaseTest {
+public class BasicTest {
     protected Playwright playwright;
     protected Browser browser;
-    protected Page page;
+    static Page page;
 
     @BeforeEach
     public void setupClass() {

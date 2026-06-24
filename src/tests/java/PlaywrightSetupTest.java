@@ -3,7 +3,7 @@ package tests.java;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
-public class PlaywrightSetupTest extends BaseTest {
+public class PlaywrightSetupTest extends BasicTest {
 
     @Test
     void testPlaywrightSetup() {

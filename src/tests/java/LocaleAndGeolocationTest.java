@@ -8,7 +8,7 @@ import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
 
-public class LocaleAndGeolocationTest extends BaseTest {
+public class LocaleAndGeolocationTest extends BasicTest {
 
     @Test
     void testLocaleAndGeolocation() {

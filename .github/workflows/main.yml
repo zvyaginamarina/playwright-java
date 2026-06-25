@@ -19,9 +19,6 @@ jobs:
       - name: Ensure browsers are installed
         run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
       - name: Run tests
-        run: mvn test
-
-      - name: Run tests
         run: mvn test "-Dtest=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!WaitingTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest,!HerokuappBrowserTest,!MouseKeyboardTest"
 
         env:

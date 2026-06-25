@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
+        id: java
         with:
           distribution: "temurin"
           java-version: "25"
@@ -23,16 +24,16 @@ jobs:
         run: mvn test "-Dtest=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!WaitingTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest"
 
       - name: Add Allure environment info
-          if: always()
-          run: |
-            mkdir -p /allure-results
-            cat > /allure-results/environment.properties <<EOF
-            Environment=CI
-            OS=Ubuntu Linux
-            Java.Version=${{ steps.java.outputs.version }}
-            CI.System=GitHub Actions
-            Browser=Chromium
-            EOF
+        if: always()
+        run: |
+          mkdir -p target/allure-results
+          {
+            echo "Environment=CI"
+            echo "OS=Ubuntu Linux"
+            echo "Java.Version=${{ steps.java.outputs.version }}"
+            echo "CI.System=GitHub Actions"
+            echo "Browser=Chromium"
+          } > target/allure-results/environment.properties
       - name: Generate Allure Report
         if: always()
         run: |

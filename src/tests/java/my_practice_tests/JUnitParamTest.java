@@ -6,17 +6,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import net.datafaker.Faker;
 
 public class JUnitParamTest {
     boolean isValidPassword(String password) {
-        if (password.length() >= 8) {
+        if (password == null) {
+            return false;
+        } else if (password.length() >= 8) {
             return true;
         } else {
             return false;
@@ -79,6 +84,25 @@ public class JUnitParamTest {
         assertNotNull(pet.getName());
         assertEquals("available", pet.getStatus());
 
+    }
+
+    @ParameterizedTest
+    @NullSource
+    void nullPasswordInput(String password) {
+        System.out.println(password);
+        assertFalse(isValidPassword(password));
+    }
+
+    @ParameterizedTest
+    @EmptySource
+    void emptyPasswordInput(String password) {
+        System.out.println(password);
+        assertFalse(isValidPassword(password));
+    }
+
+    @RepeatedTest(5)
+    void correctPassword() {
+        assertTrue(isValidPassword("12345678"));
     }
 
 }

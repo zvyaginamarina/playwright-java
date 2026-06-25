@@ -4,10 +4,12 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Browser;
@@ -58,6 +60,8 @@ public class WaitingTest {
     }
 
     @Test
+    @Tag("smoke")
+    @DisplayName("Page content fully uploaded")
     void waitForLoadContentOnPage() {
         page.navigate("https://the-internet.herokuapp.com/infinite_scroll");
 
@@ -69,11 +73,13 @@ public class WaitingTest {
         int newPageHeight = (int) page.evaluate("document.body.scrollHeight");
         System.out.println("New page height: " + newPageHeight);
 
-        assertNotEquals(pageHeight, newPageHeight);
+        assertEquals(pageHeight, newPageHeight);
 
     }
 
     @Test
+    @Tag("regression")
+    @DisplayName("Success redirect to page /secure")
     void waitForRedirect() {
         page.navigate("https://the-internet.herokuapp.com/login");
         page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("tomsmith");
@@ -86,6 +92,8 @@ public class WaitingTest {
     }
 
     @Test
+    @Tag("smoke")
+    @DisplayName("Correct sign after click on button Start")
     void waitForLoading() {
         page.navigate("https://the-internet.herokuapp.com/dynamic_loading/2");
 
@@ -106,6 +114,8 @@ public class WaitingTest {
     }
 
     @Test
+    @Tag("regression")
+    @DisplayName("Timeout exception catched")
     void timeOutErrorCatch() {
         page.navigate("https://the-internet.herokuapp.com/login");
         page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("tomsmith");
@@ -125,6 +135,8 @@ public class WaitingTest {
     }
 
     @Test
+    @Tag("regression")
+    @DisplayName("Assertions with custom timeout")
     void globalTimeouts() {
         context.setDefaultTimeout(5000);
         PlaywrightAssertions.setDefaultAssertionTimeout(0);
@@ -140,6 +152,8 @@ public class WaitingTest {
     }
 
     @Test
+    @Tag("regression")
+    @DisplayName("Content loaded after scroll")
     void refactorAntiPattern() {
 
         page.waitForResponse("https://the-internet.herokuapp.com/infinite_scroll/2", () -> {

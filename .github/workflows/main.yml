@@ -22,7 +22,7 @@ jobs:
         run: mvn test
 
       - name: Run tests
-        run: mvn test -D test=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!WaitingTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest,!HerokuappBrowserTest,!MouseKeyboardTest
+        run: mvn test -Dtest=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!WaitingTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest,!HerokuappBrowserTest,!MouseKeyboardTest
 
         env:
           ALLURE_RESULTS_DIR: target/allure-results

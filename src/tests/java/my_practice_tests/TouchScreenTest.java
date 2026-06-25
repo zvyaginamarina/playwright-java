@@ -31,7 +31,7 @@ public class TouchScreenTest {
     @BeforeAll
     static void playwrightSetUp() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(false));
+        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(true));
     }
 
     @BeforeEach

@@ -28,8 +28,8 @@ public class DynamicContentTest {
         // Инициализация Playwright и открытие браузера перед каждым тестом
         playwright = Playwright.create();
         browser = playwright.chromium()
-                .launch(new BrowserType.LaunchOptions().setHeadless(false)); // Запуск браузера в режиме с графическим
-                                                                             // интерфейсом
+                .launch(new BrowserType.LaunchOptions().setHeadless(true)); // Запуск браузера в режиме с графическим
+                                                                            // интерфейсом
         context = browser.newContext(); // Создание нового контекста браузера
         page = context.newPage(); // Открытие новой страницы
     }

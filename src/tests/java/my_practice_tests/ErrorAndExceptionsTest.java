@@ -41,7 +41,7 @@ public class ErrorAndExceptionsTest {
     @BeforeAll
     static void playwrightSetUp() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(false));
+        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(true));
     }
 
     // сброс кеша для контекста не решил проблему падения тестов при обзем запуске,

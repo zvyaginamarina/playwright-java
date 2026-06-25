@@ -26,7 +26,7 @@ public class CDPandClockTest {
     @BeforeAll
     static void browserSetUp() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(false));
+        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(true));
     }
 
     @BeforeEach

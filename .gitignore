@@ -9,6 +9,7 @@ target/
 .classpath
 .settings/
 .target
+.allure-results
 
 # OS
 .DS_Store

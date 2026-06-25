@@ -4,7 +4,7 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-    workflow_dispatch:
+  workflow_dispatch:
 jobs:
   test:
     timeout-minutes: 60
@@ -22,9 +22,6 @@ jobs:
       - name: Run tests
         run: mvn test "-Dtest=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!WaitingTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest,!HerokuappBrowserTest,!MouseKeyboardTest"
 
-        env:
-          ALLURE_RESULTS_DIR: target/allure-results
-
       - name: Generate Allure Report
         if: always()
         run: |
@@ -34,5 +31,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/site/allure-maven-plugin
+          path: allure-reports
           retention-days: 30

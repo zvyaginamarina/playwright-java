@@ -10,6 +10,7 @@ target/
 .settings/
 .target
 allure-results/
+allure-reports/
 
 # OS
 .DS_Store

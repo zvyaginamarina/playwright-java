@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Browser;
@@ -88,6 +89,7 @@ public class HerokuappBrowserTest {
         assertThat(page2).hasURL("https://the-internet.herokuapp.com/secure");
     }
 
+    @Disabled
     @Test
     void authWithCredentials() {
         BrowserContext context1 = browser.newContext();

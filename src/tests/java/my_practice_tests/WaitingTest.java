@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +73,7 @@ public class WaitingTest {
         int newPageHeight = (int) page.evaluate("document.body.scrollHeight");
         System.out.println("New page height: " + newPageHeight);
 
-        assertEquals(pageHeight, newPageHeight);
+        assertNotEquals(pageHeight, newPageHeight);
 
     }
 

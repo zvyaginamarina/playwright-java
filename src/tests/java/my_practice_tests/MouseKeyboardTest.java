@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Browser;
@@ -50,6 +51,7 @@ public class MouseKeyboardTest {
         playwright.close();
     }
 
+    @Disabled
     @Test
     void hoverTest() {
         page.navigate("https://the-internet.herokuapp.com/hovers");

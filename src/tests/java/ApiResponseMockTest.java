@@ -26,7 +26,7 @@ public class ApiResponseMockTest {
     @BeforeEach
     void setUp() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(false));
+        browser = playwright.chromium().launch(new LaunchOptions().setHeadless(true));
         context = browser.newContext();
         page = context.newPage();
     }

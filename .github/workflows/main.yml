@@ -61,4 +61,4 @@ jobs:
           path: |
             target/screenshots/
             target/videos/
-        if-no-files-found: ignore
+          if-no-files-found: ignore

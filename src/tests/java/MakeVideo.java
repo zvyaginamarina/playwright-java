@@ -12,7 +12,7 @@ public class MakeVideo {
         String videoPathName = CreateTimestampFolder.createFolder();
 
         BrowserContext context = browser.newContext(new NewContextOptions()
-                .setRecordVideoDir(Paths.get("target", "videos", videoPathName)));
+                .setRecordVideoDir(Paths.get("target", "video", videoPathName)));
         return context;
     }
 

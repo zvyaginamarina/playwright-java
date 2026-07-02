@@ -9,7 +9,7 @@ import com.microsoft.playwright.BrowserContext;
 public class MakeVideo {
 
     static BrowserContext contextWithVideo(Browser browser) {
-        String videoPathName = CreateTimestampFolder.createFolder();
+        String videoPathName = CreateTimestampFolder.folderNameGenerator();
 
         BrowserContext contextForVideo = browser.newContext(new NewContextOptions()
                 .setRecordVideoDir(Paths.get("target", "videos", videoPathName)));

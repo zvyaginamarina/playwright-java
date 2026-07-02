@@ -1,6 +1,7 @@
 package tests.java;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.Page;
@@ -8,11 +9,12 @@ import com.microsoft.playwright.Page.GetByRoleOptions;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import com.microsoft.playwright.options.AriaRole;
 
+@ExtendWith(ScreenshotOnFailure.class)
 public class CartTest extends BaseSetup {
 
     @Test
     void testCartActions() {
-        String screenShotPathName = CreateTimestampFolder.createFolder();
+        String screenShotPathName = CreateTimestampFolder.folderNameGenerator();
 
         BrowserContext contextForVideo = MakeVideo.contextWithVideo(browser);
         Page pageForVideo = contextForVideo.newPage();
@@ -30,6 +32,13 @@ public class CartTest extends BaseSetup {
 
         contextForVideo.close();
 
+    }
+
+    @Test
+    void testCartActionFailure() {
+        page.navigate("https://the-internet.herokuapp.com/add_remove_elements/");
+        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Add Element")).click();
+        assertThat(page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Delete"))).not().isVisible();
     }
 
 }

@@ -7,10 +7,10 @@ import com.microsoft.playwright.Page.ScreenshotOptions;
 
 public class MakeScreenshot {
 
-    static void screenShot(Page page, String pathName, String screenshotName) {
+    static void screenShot(Page page, String screenShotPathName, String screenshotName) {
 
         page.screenshot(new ScreenshotOptions()
-                .setPath(Paths.get(pathName, screenshotName)));
+                .setPath(Paths.get("target", "screenshots", screenShotPathName, screenshotName)));
     }
 
 }

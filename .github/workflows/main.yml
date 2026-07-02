@@ -52,3 +52,13 @@ jobs:
           name: allure-report
           path: allure-reports
           retention-days: 30
+
+      - name: Upload screenshots and videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-videos
+          path: |
+            target/screenshots/
+            target/videos/
+        if-no-files-found: ignore

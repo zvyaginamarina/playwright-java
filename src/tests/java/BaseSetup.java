@@ -18,6 +18,8 @@ public class BaseSetup {
     protected BrowserContext context;
     protected Page page;
 
+    protected String runFolder;
+
     @BeforeAll
     static void playwrightSetup() {
         boolean headLess = System.getenv("CI") != null;

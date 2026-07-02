@@ -60,5 +60,5 @@ jobs:
           name: screenshots-videos
           path: |
             target/screenshots/
-            target/videos/
+            target/video/
           if-no-files-found: ignore

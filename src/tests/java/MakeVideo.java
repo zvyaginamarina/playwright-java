@@ -11,9 +11,9 @@ public class MakeVideo {
     static BrowserContext contextWithVideo(Browser browser) {
         String videoPathName = CreateTimestampFolder.createFolder();
 
-        BrowserContext context = browser.newContext(new NewContextOptions()
+        BrowserContext contextForVideo = browser.newContext(new NewContextOptions()
                 .setRecordVideoDir(Paths.get("target", "videos", videoPathName)));
-        return context;
+        return contextForVideo;
     }
 
 }

@@ -16,7 +16,7 @@ public class BaseSetup {
     protected static Playwright playwright;
     protected static Browser browser;
     protected BrowserContext context;
-    protected Page page;
+    protected Page pageForVideo;
 
     protected String runFolder;
 
@@ -31,7 +31,7 @@ public class BaseSetup {
     @BeforeEach
     void contextSetup() {
         context = browser.newContext();
-        page = context.newPage();
+        pageForVideo = context.newPage();
     }
 
     @AfterEach

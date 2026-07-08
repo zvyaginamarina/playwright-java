@@ -16,7 +16,7 @@ public class CartTest extends BaseSetup {
     void testCartActions() {
         String screenShotPathName = CreateTimestampFolder.folderNameGenerator();
 
-        BrowserContext contextForVideo = MakeVideo.contextWithVideo(browser);
+        BrowserContext contextForVideo = MakeVideo.contextWithVideo(browser());
         Page pageForVideo = contextForVideo.newPage();
 
         pageForVideo.navigate("https://the-internet.herokuapp.com/add_remove_elements/");
@@ -36,9 +36,9 @@ public class CartTest extends BaseSetup {
 
     @Test
     void testCartActionFailure() {
-        page.navigate("https://the-internet.herokuapp.com/add_remove_elements/");
-        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Add Element")).click();
-        assertThat(page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Delete"))).not().isVisible();
+        page().navigate("https://the-internet.herokuapp.com/add_remove_elements/");
+        page().getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Add Element")).click();
+        assertThat(page().getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Delete"))).isVisible();
     }
 
 }

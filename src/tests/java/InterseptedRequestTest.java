@@ -13,7 +13,7 @@ public class InterseptedRequestTest extends BaseSetup {
 
     @Test
     void hackedRequest() {
-        page.route("**/authenticate",
+        page().route("**/authenticate",
                 route -> {
                     System.out.println("Запрос перехвачен!");
                     String requestBefore = route.request().postData();
@@ -24,12 +24,12 @@ public class InterseptedRequestTest extends BaseSetup {
                     System.out.println("Request after: " + requestAfter);
                 });
 
-        page.navigate("https://the-internet.herokuapp.com/login");
-        page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("tomsmith");
-        page.locator("#password").fill("SuperSecretPassword!");
-        page.getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Login")).click();
+        page().navigate("https://the-internet.herokuapp.com/login");
+        page().getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("tomsmith");
+        page().locator("#password").fill("SuperSecretPassword!");
+        page().getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Login")).click();
 
-        assertThat(page).not().hasURL(Pattern.compile(".*/secure"));
+        assertThat(page()).not().hasURL(Pattern.compile(".*/secure"));
 
     }
 

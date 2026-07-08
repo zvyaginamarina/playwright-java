@@ -15,7 +15,7 @@ public class ScreenshotOnFailure implements TestExecutionExceptionHandler {
     public void handleTestExecutionException​(ExtensionContext ctx, Throwable throwable) throws Throwable {
 
         BaseSetup baseSetup = (BaseSetup) ctx.getRequiredTestInstance();
-        Page page = baseSetup.page;
+        Page page = baseSetup.page();
 
         byte[] screenshot = page.screenshot();
         Allure.addAttachment(

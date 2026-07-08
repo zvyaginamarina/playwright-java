@@ -15,13 +15,13 @@ public class VisualRegressionTest extends BaseSetup {
 
     @Test
     void testHomePageVisual() throws IOException {
-        page.navigate("https://the-internet.herokuapp.com");
+        page().navigate("https://the-internet.herokuapp.com");
         Path expected = Paths.get("target", "screenshots", "expected.png");
-        page.screenshot(new ScreenshotOptions().setPath(expected));
+        page().screenshot(new ScreenshotOptions().setPath(expected));
 
-        page.reload();
+        page().reload();
         Path actual = Paths.get("target", "screenshots", "actual.png");
-        page.screenshot(new Page.ScreenshotOptions().setPath(actual));
+        page().screenshot(new Page.ScreenshotOptions().setPath(actual));
 
         long mismatch = Files.mismatch(actual, expected);
         assertEquals(-1, mismatch);

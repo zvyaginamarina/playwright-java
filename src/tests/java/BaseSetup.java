@@ -1,6 +1,5 @@
 package tests.java;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -54,13 +53,13 @@ public class BaseSetup {
         }
     }
 
-    @AfterAll
-    static void teardownThread() {
-        // per-thread ресурсы гасим и ОБЯЗАТЕЛЬНО чистим холдер
+    @AfterEach
+    void teardownThread() {
         if (browserHolder.get() != null) {
             browserHolder.get().close();
             browserHolder.remove();
         }
+
         if (playwrightHolder.get() != null) {
             playwrightHolder.get().close();
             playwrightHolder.remove();

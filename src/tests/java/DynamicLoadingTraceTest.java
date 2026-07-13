@@ -29,7 +29,7 @@ public class DynamicLoadingTraceTest extends BaseSetup {
         assertThat(page().getByText("Hello World!")).isVisible();
 
         context().tracing().stop(new StopOptions()
-                .setPath(Paths.get("target", "traices", "tracingTest1.zip")));
+                .setPath(Paths.get("target", "traces", "tracingTest1.zip")));
 
     }
 }

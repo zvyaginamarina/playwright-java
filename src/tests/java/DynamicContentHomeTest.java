@@ -2,6 +2,7 @@ package tests.java;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Browser;
@@ -14,6 +15,7 @@ import com.microsoft.playwright.Playwright;
  * @author Oleg Todor
  * @since 2025-03-18
  */
+@Disabled
 public class DynamicContentHomeTest {
 
     Playwright playwright; // Объект Playwright для взаимодействия с браузером

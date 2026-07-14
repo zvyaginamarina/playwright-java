@@ -26,7 +26,14 @@ public class LoginPage {
         page.navigate("https://www.saucedemo.com/");
     }
 
-    public void login(String username, String password) {
+    public ProductsPage loginExpectingSuccess(String username, String password) {
+        usernameField.fill(username);
+        passwordField.fill(password);
+        loginButton.click();
+        return new ProductsPage(page);
+    }
+
+    public void loginExpectingFailure(String username, String password) {
         usernameField.fill(username);
         passwordField.fill(password);
         loginButton.click();

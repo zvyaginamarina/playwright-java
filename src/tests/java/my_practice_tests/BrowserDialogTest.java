@@ -128,7 +128,7 @@ public class BrowserDialogTest {
         String fileName = "some-file.txt";
 
         Download download = page.waitForDownload(() -> {
-            page.getByText(fileName).click();
+            page.getByText(fileName, new Page.GetByTextOptions().setExact(true)).click();
         });
 
         Path savePath = Paths.get("target", "downloads", download.suggestedFilename());

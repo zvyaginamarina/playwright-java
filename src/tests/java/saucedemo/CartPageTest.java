@@ -1,13 +1,10 @@
 package tests.java.saucedemo;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -15,6 +12,8 @@ public class CartPageTest extends SauceDemoBaseTest {
 
     ProductsPage productPage;
     CartPage cart;
+
+    private static final String BACKPACK = "Sauce Labs Backpack";
 
     @BeforeEach
     void login() {
@@ -38,10 +37,11 @@ public class CartPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("One item in cart")
     void oneItemInCart() {
-        productPage.addToCart("Sauce Labs Backpack");
+        productPage.addToCart(BACKPACK);
         productPage.header().openCart();
 
         assertThat(cart.getCartItem()).hasCount(1);
+        assertThat(cart.getItemName(BACKPACK)).containsText(BACKPACK);
     }
 
     @Test
@@ -63,11 +63,11 @@ public class CartPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Remove item and empty cart")
     void removeItemAndEmptyCart() {
-        productPage.addToCart("Sauce Labs Backpack");
+        productPage.addToCart(BACKPACK);
         productPage.header().openCart();
-        cart.removeItem("Sauce Labs Backpack");
+        cart.removeItem(BACKPACK);
 
-        assertThat(cart.itemByName("Sauce Labs Backpack")).not().isVisible();
+        assertThat(cart.itemByName(BACKPACK)).not().isVisible();
         assertThat(cart.getCartItem()).hasCount(0);
         assertThat(cart.header().getCartBadge()).not().isVisible();
     }
@@ -75,12 +75,12 @@ public class CartPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Remove item and change item's count")
     void removeOneOfTwoItemsFromCart() {
-        productPage.addToCart("Sauce Labs Backpack");
+        productPage.addToCart(BACKPACK);
         productPage.addToCart("Sauce Labs Bike Light");
         productPage.header().openCart();
-        cart.removeItem("Sauce Labs Backpack");
+        cart.removeItem(BACKPACK);
 
-        assertThat(cart.itemByName("Sauce Labs Backpack")).not().isVisible();
+        assertThat(cart.itemByName(BACKPACK)).not().isVisible();
         assertThat(cart.getCartItem()).hasCount(1);
         assertThat(cart.header().getCartBadge()).containsText("1");
 
@@ -89,9 +89,9 @@ public class CartPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Open product card")
     void openProductCard() {
-        productPage.addToCart("Sauce Labs Backpack");
+        productPage.addToCart(BACKPACK);
         productPage.header().openCart();
-        cart.openItemCard("Sauce Labs Backpack");
+        cart.openItemCard(BACKPACK);
 
         assertThat(page).hasURL(Pattern.compile(".*/inventory-item\\.html"));
     }

@@ -28,7 +28,7 @@ public class ProductsPageTest extends SauceDemoBaseTest {
         productPage.addToCart("Sauce Labs Backpack");
 
         assertThat(productPage.getProductCardButton("Sauce Labs Backpack")).containsText("Remove");
-        assertThat(productPage.getCartBadge()).containsText("1");
+        assertThat(productPage.header().getCartBadge()).containsText("1");
 
     }
 
@@ -39,14 +39,14 @@ public class ProductsPageTest extends SauceDemoBaseTest {
         productPage.addToCart("Sauce Labs Backpack");
         productPage.removeFromCart("Sauce Labs Backpack");
         assertThat(productPage.getProductCardButton("Sauce Labs Backpack")).containsText("Add to cart");
-        assertThat(productPage.getCartBadge()).not().isVisible();
+        assertThat(productPage.header().getCartBadge()).not().isVisible();
     }
 
     @Test
     @DisplayName("Opening cart page")
     void openCartPage() {
 
-        productPage.openCart();
+        productPage.header().openCart();
         assertThat(page).hasURL(Pattern.compile(".*/cart.html"));
 
     }

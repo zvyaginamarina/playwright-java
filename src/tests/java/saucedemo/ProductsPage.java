@@ -8,17 +8,18 @@ import com.microsoft.playwright.options.AriaRole;
 public class ProductsPage {
 
     private final Page page;
+    private HeaderComponent header;
     private Locator productCard;
-    private Locator cart;
-    private Locator cartBadge;
 
     public ProductsPage(Page page) {
         this.page = page;
-
+        header = new HeaderComponent(page.getByTestId("primary-header"));
         productCard = page.getByTestId("inventory-item");
-        cart = page.getByTestId("shopping-cart-link");
-        cartBadge = page.getByTestId("shopping-cart-badge");
     }
+
+    public HeaderComponent header() {
+        return header;
+    };
 
     private void toggleProduct(String productName) {
         getProductCardButton(productName).click();
@@ -32,17 +33,9 @@ public class ProductsPage {
         toggleProduct(productName);
     }
 
-    public Locator getCartBadge() {
-        return cartBadge;
-    }
-
     public Locator getProductCardButton(String productName) {
         return productCard.filter(new FilterOptions().setHasText(productName))
                 .getByRole(AriaRole.BUTTON);
-    }
-
-    public void openCart() {
-        cart.click();
     }
 
 }

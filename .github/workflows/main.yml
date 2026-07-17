@@ -28,6 +28,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Run tests
+        env:
+          ENV: dev
         run: mvn test "-Dtest=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest"
 
       - name: Add Allure environment info

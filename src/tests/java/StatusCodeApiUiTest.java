@@ -20,14 +20,12 @@ import config.EnvironmentConfig;
 public class StatusCodeApiUiTest extends BaseSetup {
 
     APIRequestContext request;
-    private EnvironmentConfig config;
 
     @BeforeEach
     void apiContextSetup() {
-        config = ConfigFactory.create(EnvironmentConfig.class, System.getenv());
         APIRequest apiRequest = playwright().request();
         request = apiRequest.newContext(new APIRequest.NewContextOptions()
-                .setBaseURL(config.baseUrl()));
+                .setBaseURL("https://the-internet.herokuapp.com/"));
 
     }
 
@@ -44,7 +42,7 @@ public class StatusCodeApiUiTest extends BaseSetup {
         assertEquals(200, apiResponseOk.status());
         assertEquals(404, apiResponseNotFound.status());
 
-        page().navigate(config.baseUrl() + "/status_codes");
+        page().navigate("https://the-internet.herokuapp.com/status_codes");
 
         Locator statusOk = page().getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("200"));
         Response uiResponseOk = page().waitForResponse(response -> response.url().contains("/status_codes/200"),

@@ -33,6 +33,10 @@ public class BaseSetup {
         return pageHolder.get();
     }
 
+    protected Playwright playwright() {
+        return playwrightHolder.get();
+    }
+
     protected String runFolder;
 
     @BeforeEach

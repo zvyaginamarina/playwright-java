@@ -2,6 +2,7 @@ package tests.java;
 
 import org.aeonbits.owner.Config;
 
+@Config.Sources({ "classpath:dbconfig.properties" })
 interface DbConfig extends Config {
     @Key("db.url")
     @DefaultValue("jdbc:postgresql://localhost:5432/test_db")

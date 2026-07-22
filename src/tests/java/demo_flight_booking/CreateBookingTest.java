@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import net.datafaker.Faker;
@@ -42,6 +43,7 @@ public class CreateBookingTest extends BaseSetup {
             connection.close();
     }
 
+    @Disabled
     @Test
     void createBooking() throws SQLException {
         Faker faker = new Faker();

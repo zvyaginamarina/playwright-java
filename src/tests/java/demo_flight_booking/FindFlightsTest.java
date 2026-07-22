@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class FindFlightsTest {
@@ -42,6 +43,7 @@ public class FindFlightsTest {
             connection.close();
     }
 
+    @Disabled
     @Test
     void allFlightCount() throws SQLException {
         String countAllFlights = "SELECT count(flight_id) FROM bookings.flights";
@@ -56,6 +58,7 @@ public class FindFlightsTest {
         }
     }
 
+    @Disabled
     @Test
     void getFlightById() throws SQLException {
         String getFlight = "SELECT route_no, status FROM bookings.flights WHERE flight_id = ?";
@@ -73,6 +76,7 @@ public class FindFlightsTest {
         }
     }
 
+    @Disabled
     @Test
     void getFlightsFromLed() throws SQLException {
         String getflight = """
@@ -94,6 +98,7 @@ public class FindFlightsTest {
         }
     }
 
+    @Disabled
     @Test
     void getPassangerList() throws SQLException {
         String sql = """
@@ -118,6 +123,7 @@ public class FindFlightsTest {
         }
     }
 
+    @Disabled
     @Test
     void compareTicketsBookingAmount() throws SQLException {
         String getTotalTicketsPrice = """

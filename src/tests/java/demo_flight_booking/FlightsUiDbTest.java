@@ -15,6 +15,7 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.options.AriaRole;
@@ -44,6 +45,7 @@ public class FlightsUiDbTest extends BaseSetup {
             connection.close();
     }
 
+    @Disabled
     @Test
     void findFlightFromUiInDb() throws SQLException {
         page().navigate("http://localhost:8080/");

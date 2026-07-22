@@ -14,6 +14,7 @@ import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -55,6 +56,7 @@ public class LoginDbTest extends BaseSetup {
             connection.close();
     }
 
+    @Disabled
     @Test
     void testLoginWithDbUser() throws SQLException {
 

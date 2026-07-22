@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

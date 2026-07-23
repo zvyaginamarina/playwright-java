@@ -1,0 +1,6 @@
+services:
+  playwright:
+    build: .
+    environment:
+      - CI=true
+    command: mvn test -Dtest=CheckboxTest

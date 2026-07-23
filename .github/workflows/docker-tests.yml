@@ -1,0 +1,46 @@
+name: Docker Tests
+
+on:
+  workflow_dispatch: # Ручной запуск
+  push:
+    paths:
+      - "Dockerfile"
+      - "docker-compose.yml"
+      - ".github/workflows/docker-tests.yml"
+      - "src/tests/java/CheckboxTest.java"
+
+jobs:
+  docker-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Сборка Docker-образа
+      - name: Build Docker image
+        run: docker build -t playwright-junit-test .
+
+      # Запуск теста в контейнере.
+      # --shm-size=2g обязателен: Chromium падает на дефолтных 64Mb /dev/shm.
+      # Отчёты монтируются наружу, иначе после --rm от них ничего не остаётся.
+      - name: Run tests in container
+        run: |
+          docker run --rm \
+            --shm-size=2g \
+            -e ENV=dev \
+            -v "${PWD}/test-reports:/app/target/surefire-reports" \
+            -v "${PWD}/allure-results:/app/target/allure-results" \
+            playwright-junit-test
+
+      - name: Show surefire report
+        if: always()
+        run: cat test-reports/*.txt || true
+
+      - name: Upload reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-test-reports
+          path: |
+            test-reports/
+            allure-results/
+          if-no-files-found: ignore

@@ -16,21 +16,22 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "25"
+          cache: maven
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
       - name: Build & Install
         run: mvn -B install -D skipTests --no-transfer-progress
       - name: Ensure browsers are installed
         run: mvn exec:java -e -D exec.mainClass=com.microsoft.playwright.CLI -D exec.args="install --with-deps"
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
       - name: Run tests
         env:
           ENV: dev
-        run: mvn test "-Dtest=!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest"
+        run: mvn test "-Dtest=!CheckboxTest,!LocalHtmlFrameTest,!YandexSearchTest,!WebSocketTest,!ScreenShotWhenFailTest,!ModernAssertionsTest,!AssertionTest,!ErrorAndExceptionsTest"
 
       - name: Add Allure environment info
         if: always()

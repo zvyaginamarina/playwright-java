@@ -27,20 +27,22 @@ public class LoginPage {
     }
 
     public ProductsPage loginExpectingSuccess(String username, String password) {
-        usernameField.fill(username);
-        passwordField.fill(password);
-        loginButton.click();
+        login(username, password);
         return new ProductsPage(page);
     }
 
     public void loginExpectingFailure(String username, String password) {
-        usernameField.fill(username);
-        passwordField.fill(password);
-        loginButton.click();
+        login(username, password);
     }
 
     public Locator getLoginError() {
         return errorMessage;
+    }
+
+    public void login(String username, String password) {
+        usernameField.fill(username);
+        passwordField.fill(password);
+        loginButton.click();
     }
 
 }

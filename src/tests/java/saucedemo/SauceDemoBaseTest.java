@@ -16,6 +16,8 @@ public class SauceDemoBaseTest {
     protected static Browser browser;
     protected BrowserContext context;
     protected Page page;
+    protected LoginPage login;
+    protected ProductsPage productsPage;
 
     @BeforeAll
     static void playwrightSetup() {
@@ -48,6 +50,15 @@ public class SauceDemoBaseTest {
         if (playwright != null) {
             playwright.close();
         }
+    }
+
+    void login() {
+        LoginPage loginPage = new LoginPage(page);
+        String username = "standard_user";
+        String password = "secret_sauce";
+
+        loginPage.openLoginPage();
+        productsPage = loginPage.loginExpectingSuccess(username, password);
     }
 
 }

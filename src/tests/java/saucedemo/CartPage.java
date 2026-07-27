@@ -47,8 +47,9 @@ public class CartPage {
         return itemByName(productName).getByTestId("inventory-item-name");
     }
 
-    public void openItemCard(String productName) {
+    public ItemPage openItemCard(String productName) {
         getItemName(productName).click();
+        return new ItemPage(page);
     }
 
 }

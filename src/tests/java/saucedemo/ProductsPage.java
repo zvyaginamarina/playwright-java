@@ -38,4 +38,33 @@ public class ProductsPage {
                 .getByRole(AriaRole.BUTTON);
     }
 
+    public Locator sortingDropDown(Page page) {
+        return page.getByTestId("product-sort-container");
+    }
+
+    void sortByNameAsc(Page page) {
+        sortingDropDown(page).selectOption("az");
+    }
+
+    void sortByNameDesc(Page page) {
+        sortingDropDown(page).selectOption("za");
+    }
+
+    void sortByPriceAsc(Page page) {
+        sortingDropDown(page).selectOption("lohi");
+    }
+
+    void sortByPriceDesc(Page page) {
+        sortingDropDown(page).selectOption("hilo");
+    }
+
+    public Locator getItemByName(String productName) {
+        return productCard.filter(new FilterOptions().setHasText(productName))
+                .getByTestId("inventory-item-name");
+    }
+
+    public ItemPage openItemPage(String productName) {
+        getItemByName(productName).click();
+        return new ItemPage(page);
+    }
 }

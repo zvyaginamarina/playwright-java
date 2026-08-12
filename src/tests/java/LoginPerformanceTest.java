@@ -21,12 +21,11 @@ public class LoginPerformanceTest extends BaseSetup {
                 .setSnapshots(true)
                 .setSources(true));
 
+        LoginPage lp = new LoginPage(page());
+
         long start = System.currentTimeMillis();
 
-        page().navigate("https://the-internet.herokuapp.com/login");
-        page().getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("tomsmith");
-        page().locator("#password").fill("SuperSecretPassword!");
-        page().getByRole(AriaRole.BUTTON, new GetByRoleOptions().setName("Login")).click();
+        lp.successLogin(page());
 
         assertThat(page().locator("#flash-messages")).containsText("You logged into a secure area!");
 

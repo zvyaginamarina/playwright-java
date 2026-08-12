@@ -71,10 +71,9 @@ public class OptimizedLoginTest {
 
     private static List<Cookie> performLogin(Page page) {
 
-        page.navigate("https://the-internet.herokuapp.com/login");
-        page.getByRole(AriaRole.TEXTBOX, new GetByRoleOptions().setName("Username")).fill("tomsmith");
-        page.locator("#password").fill("SuperSecretPassword!");
-        page.getByRole(AriaRole.BUTTON).click();
+        LoginPage lp = new LoginPage(page);
+
+        lp.successLogin(page);
 
         return page.context().cookies();
     }

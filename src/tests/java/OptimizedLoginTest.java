@@ -6,6 +6,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.microsoft.playwright.Browser;
@@ -18,12 +19,31 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.Cookie;
 
+/**
+ * Проверяет доступ к защищённой зоне сайта с сессионными куками, полученными
+ * заранее.
+ * <p>
+ * Перед запуском теста происходит: создание отдельных
+ * контекста и страницы, выполняется вход, куки сессии сохраняются в переменную.
+ * Перед тестом создается новый контекст и страница, полученные куки
+ * присваиваются контексту. Вход выполняется один раз на класс, чтобы не платить
+ * за него в каждом тесте.
+ * <p>
+ * Предусловия:
+ * <li>
+ * логин и пароль валидны
+ * </li>
+ * <li>
+ * сайт доступен
+ * </li>
+ */
+
 public class OptimizedLoginTest {
     static private Playwright playwright;
     static private Browser browser;
     private BrowserContext context;
     private Page page;
-    static private List<Cookie> authCookies;
+    private static List<Cookie> authCookies;
 
     private static boolean HEADLESS = System.getenv("CI") != null;
 
@@ -52,7 +72,7 @@ public class OptimizedLoginTest {
     }
 
     @AfterEach
-    void tearDownContex() {
+    void tearDownContext() {
         if (context != null) {
             context.close();
         }
@@ -79,6 +99,7 @@ public class OptimizedLoginTest {
     }
 
     @Test
+    @DisplayName("Open secure page with session cookie - page should open")
     void testSecureArea() {
         page.navigate("https://the-internet.herokuapp.com/secure");
         assertThat(page.getByRole(AriaRole.HEADING, new GetByRoleOptions().setLevel(2))).containsText("Secure Area");

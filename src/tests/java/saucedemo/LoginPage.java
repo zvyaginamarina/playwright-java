@@ -5,6 +5,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.GetByRoleOptions;
 import com.microsoft.playwright.options.AriaRole;
 
+import tests.java.saucedemo.config.SaucedemoConfig;
+
 public class LoginPage {
 
     private Page page;
@@ -23,7 +25,7 @@ public class LoginPage {
     }
 
     public void openLoginPage() {
-        page.navigate("https://www.saucedemo.com/");
+        page.navigate(SaucedemoConfig.INSTANCE.baseUrl());
     }
 
     public ProductsPage loginExpectingSuccess(String username, String password) {

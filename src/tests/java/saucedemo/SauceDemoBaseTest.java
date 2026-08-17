@@ -11,12 +11,14 @@ import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
+import tests.java.saucedemo.config.SaucedemoConfig;
+
 public class SauceDemoBaseTest {
     protected static Playwright playwright;
     protected static Browser browser;
     protected BrowserContext context;
     protected Page page;
-    protected LoginPage login;
+    protected LoginPage loginPage;
     protected ProductsPage productsPage;
 
     @BeforeAll
@@ -52,13 +54,14 @@ public class SauceDemoBaseTest {
         }
     }
 
-    void login() {
-        LoginPage loginPage = new LoginPage(page);
-        String username = "standard_user";
-        String password = "secret_sauce";
+    void successLogin(User user) {
+
+        loginPage = new LoginPage(page);
+
+        String username = user.username();
 
         loginPage.openLoginPage();
-        productsPage = loginPage.loginExpectingSuccess(username, password);
+        productsPage = loginPage.loginExpectingSuccess(username, SaucedemoConfig.INSTANCE.password());
     }
 
 }

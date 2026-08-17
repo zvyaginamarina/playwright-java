@@ -2,6 +2,7 @@ package tests.java.saucedemo;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,15 +10,16 @@ public class ItemPageTest extends SauceDemoBaseTest {
 
     ItemPage itemPage;
 
-    private static final String BACKPACK = "Sauce Labs Backpack";
-    private static final String BIKELIGHT = "Sauce Labs Bike Light";
+    @BeforeEach
+    void preconditions() {
+        successLogin(User.STANDARD_USER);
+    }
 
     @Test
     @DisplayName("Add to cart")
     void addToCart() {
-        login();
 
-        itemPage = productsPage.openItemPage(BACKPACK);
+        itemPage = productsPage.openItemPage(Products.BACKPACK);
         itemPage.addToCart(page);
 
         assertThat(itemPage.getItemButton(page)).containsText("Remove");
@@ -27,10 +29,9 @@ public class ItemPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Add to cart one more item")
     void addToCartOneMoreItem() {
-        login();
 
-        productsPage.addToCart(BACKPACK);
-        itemPage = productsPage.openItemPage(BIKELIGHT);
+        productsPage.addToCart(Products.BACKPACK);
+        itemPage = productsPage.openItemPage(Products.BIKELIGHT);
         itemPage.addToCart(page);
 
         assertThat(itemPage.header().getCartBadge()).containsText("2");
@@ -39,9 +40,8 @@ public class ItemPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Remove only item from cart")
     void removeItemFromCart() {
-        login();
 
-        itemPage = productsPage.openItemPage(BACKPACK);
+        itemPage = productsPage.openItemPage(Products.BACKPACK);
         itemPage.addToCart(page);
         itemPage.removeFromCart(page);
 
@@ -52,10 +52,9 @@ public class ItemPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Remove one of two item from cart")
     void removeOneOfTwoItemFromCart() {
-        login();
 
-        productsPage.addToCart(BIKELIGHT);
-        itemPage = productsPage.openItemPage(BACKPACK);
+        productsPage.addToCart(Products.BIKELIGHT);
+        itemPage = productsPage.openItemPage(Products.BACKPACK);
         itemPage.addToCart(page);
         itemPage.removeFromCart(page);
 

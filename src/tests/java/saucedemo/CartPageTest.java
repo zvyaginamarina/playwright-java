@@ -10,7 +10,6 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 public class CartPageTest extends SauceDemoBaseTest {
 
-    ProductsPage productPage;
     CartPage cart;
 
     @BeforeEach
@@ -24,7 +23,7 @@ public class CartPageTest extends SauceDemoBaseTest {
     void emptyCart() {
         productPage.header().openCart();
 
-        assertThat(cart.getCartItem()).hasCount(0);
+        assertThat(cart.cartItem()).hasCount(0);
     }
 
     @Test
@@ -33,8 +32,8 @@ public class CartPageTest extends SauceDemoBaseTest {
         productPage.addToCart(Products.BACKPACK);
         productPage.header().openCart();
 
-        assertThat(cart.getCartItem()).hasCount(1);
-        assertThat(cart.getItemName(Products.BACKPACK)).containsText(Products.BACKPACK);
+        assertThat(cart.cartItem()).hasCount(1);
+        assertThat(cart.itemName(Products.BACKPACK)).containsText(Products.BACKPACK);
     }
 
     @Test
@@ -49,8 +48,8 @@ public class CartPageTest extends SauceDemoBaseTest {
 
         productPage.header().openCart();
 
-        assertThat(cart.getCartItem()).hasCount(6);
-        assertThat(cart.getAllItemName()).hasText(products);
+        assertThat(cart.cartItem()).hasCount(6);
+        assertThat(cart.allItemName()).hasText(products);
     }
 
     @Test
@@ -61,8 +60,8 @@ public class CartPageTest extends SauceDemoBaseTest {
         cart.removeItem(Products.BACKPACK);
 
         assertThat(cart.itemByName(Products.BACKPACK)).not().isVisible();
-        assertThat(cart.getCartItem()).hasCount(0);
-        assertThat(cart.header().getCartBadge()).not().isVisible();
+        assertThat(cart.cartItem()).hasCount(0);
+        assertThat(cart.header().cartBadge()).not().isVisible();
     }
 
     @Test
@@ -74,8 +73,8 @@ public class CartPageTest extends SauceDemoBaseTest {
         cart.removeItem(Products.BACKPACK);
 
         assertThat(cart.itemByName(Products.BACKPACK)).not().isVisible();
-        assertThat(cart.getCartItem()).hasCount(1);
-        assertThat(cart.header().getCartBadge()).containsText("1");
+        assertThat(cart.cartItem()).hasCount(1);
+        assertThat(cart.header().cartBadge()).containsText("1");
 
     }
 
@@ -84,7 +83,7 @@ public class CartPageTest extends SauceDemoBaseTest {
     void openProductCard() {
         productPage.addToCart(Products.BACKPACK);
         productPage.header().openCart();
-        cart.openItemCard(Products.BACKPACK);
+        cart.openItemPage(Products.BACKPACK);
 
         assertThat(page).hasURL(Pattern.compile(".*/inventory-item\\.html"));
     }

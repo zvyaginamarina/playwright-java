@@ -22,7 +22,7 @@ public class CartPage {
         return header;
     };
 
-    public Locator getCartItem() {
+    public Locator cartItem() {
         return cartItem;
     }
 
@@ -30,25 +30,25 @@ public class CartPage {
         return cartItem.filter(new FilterOptions().setHasText(productName));
     }
 
-    public Locator getAllItemName() {
+    public Locator allItemName() {
         return cartItem.getByTestId("inventory-item-name");
     }
 
-    public Locator getItemCardButton(String productName) {
+    public Locator itemCardButton(String productName) {
         return itemByName(productName).getByRole(AriaRole.BUTTON,
                 new GetByRoleOptions().setName("Remove"));
     }
 
     public void removeItem(String productName) {
-        getItemCardButton(productName).click();
+        itemCardButton(productName).click();
     }
 
-    public Locator getItemName(String productName) {
+    public Locator itemName(String productName) {
         return itemByName(productName).getByTestId("inventory-item-name");
     }
 
-    public ItemPage openItemCard(String productName) {
-        getItemName(productName).click();
+    public ItemPage openItemPage(String productName) {
+        itemName(productName).click();
         return new ItemPage(page);
     }
 

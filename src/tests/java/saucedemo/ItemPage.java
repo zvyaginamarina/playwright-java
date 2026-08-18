@@ -4,8 +4,6 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 
-import net.datafaker.transformations.Transformer;
-
 public class ItemPage {
     private final Page page;
     private HeaderComponent header;
@@ -21,23 +19,40 @@ public class ItemPage {
         return header;
     }
 
-    public Locator getItemButton(Page page) {
+    public Locator itemButton() {
         return page.locator(".inventory_details_desc_container").getByRole(AriaRole.BUTTON);
     }
 
-    public void toggleButton(Page page) {
-        getItemButton(page).click();
+    private void toggleButton() {
+        itemButton().click();
     }
 
-    public void addToCart(Page page) {
-        toggleButton(page);
+    public void addToCart() {
+        itemButton().waitFor();
+        String buttonText = itemButton().textContent();
+
+        if (InterfaceElements.ADD_TO_CART_BUTTON.equals(buttonText)) {
+            toggleButton();
+        } else {
+            throw new IllegalStateException(
+                    "Expected '" + InterfaceElements.ADD_TO_CART_BUTTON + "' button, but got " + buttonText);
+        }
     }
 
-    public void removeFromCart(Page page) {
-        toggleButton(page);
+    public void removeFromCart() {
+        itemButton().waitFor();
+        String buttonText = itemButton().textContent();
+
+        if (InterfaceElements.REMOVE_FROM_CART_BUTTON.equals(buttonText)) {
+            toggleButton();
+        } else {
+            throw new IllegalStateException(
+                    "Expected '" + InterfaceElements.REMOVE_FROM_CART_BUTTON + "' button, but got " + buttonText);
+        }
     }
 
-    public ProductsPage backToProducts(Page page) {
+    public ProductsPage backToProductPage() {
+        backButton.click();
         return new ProductsPage(page);
     }
 

@@ -15,7 +15,7 @@ public class HeaderComponent {
         cartBadge = header.getByTestId("shopping-cart-badge");
     }
 
-    public Locator getCartBadge() {
+    public Locator cartBadge() {
         return cartBadge;
     }
 

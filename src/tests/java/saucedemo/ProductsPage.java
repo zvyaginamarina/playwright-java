@@ -24,18 +24,38 @@ public class ProductsPage {
     };
 
     private void toggleProduct(String productName) {
-        getProductCardButton(productName).click();
+        productCardButton(productName).click();
     }
 
     public void addToCart(String productName) {
-        toggleProduct(productName);
+
+        productCardButton(productName).waitFor();
+        String buttonText = productCardButton(productName).textContent();
+
+        if (InterfaceElements.ADD_TO_CART_BUTTON.equals(buttonText)) {
+            toggleProduct(productName);
+        } else {
+            throw new IllegalStateException(
+                    "Expected '" + InterfaceElements.ADD_TO_CART_BUTTON + "' button for product: " + productName
+                            + " but got " + buttonText);
+        }
     }
 
     public void removeFromCart(String productName) {
-        toggleProduct(productName);
+
+        productCardButton(productName).waitFor();
+        String buttonText = productCardButton(productName).textContent();
+
+        if (InterfaceElements.REMOVE_FROM_CART_BUTTON.equals(buttonText)) {
+            toggleProduct(productName);
+        } else {
+            throw new IllegalStateException(
+                    "Expected " + InterfaceElements.REMOVE_FROM_CART_BUTTON + " button for product: " + productName
+                            + " but got " + buttonText);
+        }
     }
 
-    public Locator getProductCardButton(String productName) {
+    public Locator productCardButton(String productName) {
         return productCard.filter(new FilterOptions().setHasText(productName))
                 .getByRole(AriaRole.BUTTON);
     }
@@ -44,29 +64,29 @@ public class ProductsPage {
         return page.getByTestId("product-sort-container");
     }
 
-    void sortByNameAsc(Page page) {
+    public void sortByNameAsc(Page page) {
         sortingDropDown(page).selectOption("az");
     }
 
-    void sortByNameDesc(Page page) {
+    public void sortByNameDesc(Page page) {
         sortingDropDown(page).selectOption("za");
     }
 
-    void sortByPriceAsc(Page page) {
+    public void sortByPriceAsc(Page page) {
         sortingDropDown(page).selectOption("lohi");
     }
 
-    void sortByPriceDesc(Page page) {
+    public void sortByPriceDesc(Page page) {
         sortingDropDown(page).selectOption("hilo");
     }
 
-    public Locator getItemByName(String productName) {
+    public Locator itemByName(String productName) {
         return productCard.filter(new FilterOptions().setHasText(productName))
                 .getByTestId("inventory-item-name");
     }
 
     public ItemPage openItemPage(String productName) {
-        getItemByName(productName).click();
+        itemByName(productName).click();
         return new ItemPage(page);
     }
 

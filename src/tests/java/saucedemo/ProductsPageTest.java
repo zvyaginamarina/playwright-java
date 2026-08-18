@@ -19,10 +19,10 @@ public class ProductsPageTest extends SauceDemoBaseTest {
     @DisplayName("Adding item to cart")
     void addToCart() {
 
-        productsPage.addToCart(Products.BACKPACK);
+        productPage.addToCart(Products.BACKPACK);
 
-        assertThat(productsPage.getProductCardButton(Products.BACKPACK)).containsText("Remove");
-        assertThat(productsPage.header().getCartBadge()).containsText("1");
+        assertThat(productPage.productCardButton(Products.BACKPACK)).containsText("Remove");
+        assertThat(productPage.header().cartBadge()).containsText("1");
 
     }
 
@@ -30,17 +30,17 @@ public class ProductsPageTest extends SauceDemoBaseTest {
     @DisplayName("Removing from cart")
     void removeFromCart() {
 
-        productsPage.addToCart(Products.BACKPACK);
-        productsPage.removeFromCart(Products.BACKPACK);
-        assertThat(productsPage.getProductCardButton(Products.BACKPACK)).containsText("Add to cart");
-        assertThat(productsPage.header().getCartBadge()).not().isVisible();
+        productPage.addToCart(Products.BACKPACK);
+        productPage.removeFromCart(Products.BACKPACK);
+        assertThat(productPage.productCardButton(Products.BACKPACK)).containsText("Add to cart");
+        assertThat(productPage.header().cartBadge()).not().isVisible();
     }
 
     @Test
     @DisplayName("Opening cart page")
     void openCartPage() {
 
-        productsPage.header().openCart();
+        productPage.header().openCart();
         assertThat(page).hasURL(Pattern.compile(".*/cart.html"));
 
     }

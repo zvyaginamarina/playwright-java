@@ -19,47 +19,47 @@ public class ItemPageTest extends SauceDemoBaseTest {
     @DisplayName("Add to cart")
     void addToCart() {
 
-        itemPage = productsPage.openItemPage(Products.BACKPACK);
-        itemPage.addToCart(page);
+        itemPage = productPage.openItemPage(Products.BACKPACK);
+        itemPage.addToCart();
 
-        assertThat(itemPage.getItemButton(page)).containsText("Remove");
-        assertThat(itemPage.header().getCartBadge()).containsText("1");
+        assertThat(itemPage.itemButton()).containsText(InterfaceElements.REMOVE_FROM_CART_BUTTON);
+        assertThat(itemPage.header().cartBadge()).containsText("1");
     }
 
     @Test
     @DisplayName("Add to cart one more item")
     void addToCartOneMoreItem() {
 
-        productsPage.addToCart(Products.BACKPACK);
-        itemPage = productsPage.openItemPage(Products.BIKELIGHT);
-        itemPage.addToCart(page);
+        productPage.addToCart(Products.BACKPACK);
+        itemPage = productPage.openItemPage(Products.BIKELIGHT);
+        itemPage.addToCart();
 
-        assertThat(itemPage.header().getCartBadge()).containsText("2");
+        assertThat(itemPage.header().cartBadge()).containsText("2");
     }
 
     @Test
     @DisplayName("Remove only item from cart")
     void removeItemFromCart() {
 
-        itemPage = productsPage.openItemPage(Products.BACKPACK);
-        itemPage.addToCart(page);
-        itemPage.removeFromCart(page);
+        itemPage = productPage.openItemPage(Products.BACKPACK);
+        itemPage.addToCart();
+        itemPage.removeFromCart();
 
-        assertThat(itemPage.getItemButton(page)).containsText("Add to cart");
-        assertThat(itemPage.header().getCartBadge()).not().isVisible();
+        assertThat(itemPage.itemButton()).containsText(InterfaceElements.ADD_TO_CART_BUTTON);
+        assertThat(itemPage.header().cartBadge()).not().isVisible();
     }
 
     @Test
     @DisplayName("Remove one of two item from cart")
     void removeOneOfTwoItemFromCart() {
 
-        productsPage.addToCart(Products.BIKELIGHT);
-        itemPage = productsPage.openItemPage(Products.BACKPACK);
-        itemPage.addToCart(page);
-        itemPage.removeFromCart(page);
+        productPage.addToCart(Products.BIKELIGHT);
+        itemPage = productPage.openItemPage(Products.BACKPACK);
+        itemPage.addToCart();
+        itemPage.removeFromCart();
 
-        assertThat(itemPage.getItemButton(page)).containsText("Add to cart");
-        assertThat(itemPage.header().getCartBadge()).containsText("1");
+        assertThat(itemPage.itemButton()).containsText(InterfaceElements.ADD_TO_CART_BUTTON);
+        assertThat(itemPage.header().cartBadge()).containsText("1");
     }
 
 }

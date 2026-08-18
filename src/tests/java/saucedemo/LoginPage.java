@@ -37,7 +37,7 @@ public class LoginPage {
         login(username, password);
     }
 
-    public Locator getLoginError() {
+    public Locator loginError() {
         return errorMessage;
     }
 

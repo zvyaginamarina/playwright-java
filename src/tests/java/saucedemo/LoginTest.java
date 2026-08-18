@@ -4,8 +4,12 @@ import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
+import tests.java.saucedemo.config.SaucedemoConfig;
 
 public class LoginTest extends SauceDemoBaseTest {
 
@@ -13,14 +17,39 @@ public class LoginTest extends SauceDemoBaseTest {
     @DisplayName("Login with standart user")
     void standartUserLogin() {
         LoginPage loginPage = new LoginPage(page);
-        String username = "standard_user";
-        String password = "secret_sauce";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingSuccess(username, password);
+        loginPage.loginExpectingSuccess(User.STANDARD_USER.username(), SaucedemoConfig.INSTANCE.password());
 
         assertThat(page).hasURL(Pattern.compile(".*/inventory.html"));
+    }
 
+    @Test
+    @DisplayName("Login with standart user, incorrect password")
+    void standartUserIncorrectPasswordLogin() {
+        LoginPage loginPage = new LoginPage(page);
+        String password = "secret_sauce1";
+
+        loginPage.openLoginPage();
+        loginPage.loginExpectingFailure(User.STANDARD_USER.username(), password);
+
+        assertThat(loginPage.loginError())
+                .containsText("Epic sadface: Username and password do not match any user in this service");
+        assertThat(page).not().hasURL(Pattern.compile(".*/inventory.html"));
+    }
+
+    @Test
+    @DisplayName("Login with standart user, empty password")
+    void standartUserEmptyPasswordLogin() {
+        LoginPage loginPage = new LoginPage(page);
+        String password = "";
+
+        loginPage.openLoginPage();
+        loginPage.loginExpectingFailure(User.STANDARD_USER.username(), password);
+
+        assertThat(loginPage.loginError())
+                .containsText("Epic sadface: Password is required");
+        assertThat(page).not().hasURL(Pattern.compile(".*/inventory.html"));
     }
 
     @Test
@@ -33,59 +62,48 @@ public class LoginTest extends SauceDemoBaseTest {
         loginPage.openLoginPage();
         loginPage.loginExpectingFailure(username, password);
 
-        assertThat(loginPage.getLoginError()).containsText("Epic sadface: Sorry, this user has been locked out.");
+        assertThat(loginPage.loginError()).containsText("Epic sadface: Sorry, this user has been locked out.");
         assertThat(page).not().hasURL(Pattern.compile(".*/inventory.html"));
 
     }
 
     @Test
-    @DisplayName("Login with problem_user")
-    void problemUserLogin() {
+    @DisplayName("Login with invalid user, correct password")
+    void invalidUserLogin() {
         LoginPage loginPage = new LoginPage(page);
-        String username = "problem_user";
-        String password = "secret_sauce";
+        String username = "stndrt_user";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingSuccess(username, password);
+        loginPage.loginExpectingSuccess(username, SaucedemoConfig.INSTANCE.password());
 
-        assertThat(page).hasURL(Pattern.compile(".*/inventory.html"));
+        assertThat(loginPage.loginError())
+                .containsText("Epic sadface: Username and password do not match any user in this service");
+        assertThat(page).not().hasURL(Pattern.compile(".*/inventory.html"));
+
     }
 
     @Test
-    @DisplayName("Login with performance_glitch_user")
-    void performanceGlitchUserLogin() {
+    @DisplayName("Login with empty user, correct password")
+    void emptyUserLogin() {
         LoginPage loginPage = new LoginPage(page);
-        String username = "performance_glitch_user";
-        String password = "secret_sauce";
+        String username = "";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingSuccess(username, password);
+        loginPage.loginExpectingSuccess(username, SaucedemoConfig.INSTANCE.password());
 
-        assertThat(page).hasURL(Pattern.compile(".*/inventory.html"));
+        assertThat(loginPage.loginError())
+                .containsText("Epic sadface: Username is required");
+        assertThat(page).not().hasURL(Pattern.compile(".*/inventory.html"));
+
     }
 
-    @Test
-    @DisplayName("Login with error_user")
-    void errorUserLogin() {
+    @ParameterizedTest(name = "Login with {0}")
+    @EnumSource(value = User.class, names = { "STANDARD_USER", "LOCKED_OUT_USER" }, mode = EnumSource.Mode.EXCLUDE)
+    void allUsersLogin(User user) {
         LoginPage loginPage = new LoginPage(page);
-        String username = "error_user";
-        String password = "secret_sauce";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingSuccess(username, password);
-
-        assertThat(page).hasURL(Pattern.compile(".*/inventory.html"));
-    }
-
-    @Test
-    @DisplayName("Login with visual_user")
-    void visualUserLogin() {
-        LoginPage loginPage = new LoginPage(page);
-        String username = "visual_user";
-        String password = "secret_sauce";
-
-        loginPage.openLoginPage();
-        loginPage.loginExpectingSuccess(username, password);
+        loginPage.loginExpectingSuccess(user.username(), SaucedemoConfig.INSTANCE.password());
 
         assertThat(page).hasURL(Pattern.compile(".*/inventory.html"));
     }

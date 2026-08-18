@@ -19,7 +19,7 @@ public class SauceDemoBaseTest {
     protected BrowserContext context;
     protected Page page;
     protected LoginPage loginPage;
-    protected ProductsPage productsPage;
+    protected ProductsPage productPage;
 
     @BeforeAll
     static void playwrightSetup() {
@@ -61,7 +61,7 @@ public class SauceDemoBaseTest {
         String username = user.username();
 
         loginPage.openLoginPage();
-        productsPage = loginPage.loginExpectingSuccess(username, SaucedemoConfig.INSTANCE.password());
+        productPage = loginPage.loginExpectingSuccess(username, SaucedemoConfig.INSTANCE.password());
     }
 
 }

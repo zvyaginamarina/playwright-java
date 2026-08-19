@@ -28,23 +28,19 @@ public class LoginPage {
         page.navigate(SaucedemoConfig.INSTANCE.baseUrl());
     }
 
+    public void login(String username, String password) {
+        usernameField.fill(username);
+        passwordField.fill(password);
+        loginButton.click();
+    }
+
     public ProductsPage loginExpectingSuccess(String username, String password) {
         login(username, password);
         return new ProductsPage(page);
     }
 
-    public void loginExpectingFailure(String username, String password) {
-        login(username, password);
-    }
-
     public Locator loginError() {
         return errorMessage;
-    }
-
-    public void login(String username, String password) {
-        usernameField.fill(username);
-        passwordField.fill(password);
-        loginButton.click();
     }
 
 }

@@ -5,11 +5,12 @@ import com.microsoft.playwright.Page;
 
 public class CheckoutInformationPage {
     private final Page page;
-    Locator firstName;
-    Locator lastName;
-    Locator postalCode;
-    Locator cancelButton;
-    Locator continueButton;
+    private final Locator firstName;
+    private final Locator lastName;
+    private final Locator postalCode;
+    private final Locator cancelButton;
+    private final Locator continueButton;
+    private final Locator error;
 
     public CheckoutInformationPage(Page page) {
         this.page = page;
@@ -18,18 +19,28 @@ public class CheckoutInformationPage {
         postalCode = page.getByTestId("postalCode");
         cancelButton = page.getByTestId("cancel");
         continueButton = page.getByTestId("continue");
+        error = page.getByTestId("error");
     }
 
-    public void fillInformationForm(String firstname, String lastname, String postalcode) {
+    public void sendForm(String firstname, String lastname, String postalcode) {
         firstName.fill(firstname);
         lastName.fill(lastname);
         postalCode.fill(postalcode);
         continueButton.click();
     }
 
-    public CheckoutOwerviewPage continueCheckout(String firstname, String lastname, String postalcode) {
-        fillInformationForm(firstname, lastname, postalcode);
-        return new CheckoutOwerviewPage();
+    public CheckoutOverviewPage continueToCheckoutOverviewPage(String firstname, String lastname, String postalcode) {
+        sendForm(firstname, lastname, postalcode);
+        return new CheckoutOverviewPage(page);
+    }
+
+    public Locator errorMessage() {
+        return error;
+    }
+
+    public CartPage returnToCart() {
+        cancelButton.click();
+        return new CartPage(page);
     }
 
 }

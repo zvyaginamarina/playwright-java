@@ -31,7 +31,7 @@ public class LoginTest extends SauceDemoBaseTest {
         String password = "secret_sauce1";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingFailure(User.STANDARD_USER.username(), password);
+        loginPage.login(User.STANDARD_USER.username(), password);
 
         assertThat(loginPage.loginError())
                 .containsText("Epic sadface: Username and password do not match any user in this service");
@@ -45,7 +45,7 @@ public class LoginTest extends SauceDemoBaseTest {
         String password = "";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingFailure(User.STANDARD_USER.username(), password);
+        loginPage.login(User.STANDARD_USER.username(), password);
 
         assertThat(loginPage.loginError())
                 .containsText("Epic sadface: Password is required");
@@ -60,7 +60,7 @@ public class LoginTest extends SauceDemoBaseTest {
         String password = "secret_sauce";
 
         loginPage.openLoginPage();
-        loginPage.loginExpectingFailure(username, password);
+        loginPage.login(username, password);
 
         assertThat(loginPage.loginError()).containsText("Epic sadface: Sorry, this user has been locked out.");
         assertThat(page).not().hasURL(Pattern.compile(".*/inventory.html"));

@@ -10,12 +10,16 @@ public class CartPage {
     private final Page page;
     private HeaderComponent header;
     private Locator cartItem;
+    private Locator checkoutButton;
+    private Locator continueShoppingButton;
 
     public CartPage(Page page) {
         this.page = page;
         header = new HeaderComponent(page.getByTestId("primary-header"));
 
         cartItem = page.getByTestId("inventory-item");
+        checkoutButton = page.getByTestId("checkout");
+        continueShoppingButton = page.getByTestId("continue-shopping");
     }
 
     public HeaderComponent header() {
@@ -50,6 +54,16 @@ public class CartPage {
     public ItemPage openItemPage(String productName) {
         itemName(productName).click();
         return new ItemPage(page);
+    }
+
+    public CheckoutInformationPage openCheckoutInformationPage() {
+        checkoutButton.click();
+        return new CheckoutInformationPage(page);
+    }
+
+    public ProductsPage openProductsPage() {
+        continueShoppingButton.click();
+        return new ProductsPage(page);
     }
 
 }

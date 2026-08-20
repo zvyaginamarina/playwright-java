@@ -7,28 +7,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Page.GetByRoleOptions;
 import com.microsoft.playwright.Page.NavigateOptions;
 import com.microsoft.playwright.Page.ScreenshotOptions;
-import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitUntilState;
 

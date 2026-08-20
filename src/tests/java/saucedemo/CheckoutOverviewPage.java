@@ -3,8 +3,8 @@ package tests.java.saucedemo;
 import java.math.BigDecimal;
 
 import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Locator.FilterOptions;
+import com.microsoft.playwright.Page;
 
 public class CheckoutOverviewPage {
     private final Page page;
@@ -17,7 +17,7 @@ public class CheckoutOverviewPage {
 
     public CheckoutOverviewPage(Page page) {
         this.page = page;
-        item = page.getByTestId("cart_item");
+        item = page.getByTestId("inventory-item");
         subtotal = page.getByTestId("subtotal-label");
         tax = page.getByTestId("tax-label");
         total = page.getByTestId("total-label");
@@ -29,20 +29,16 @@ public class CheckoutOverviewPage {
         return item;
     }
 
-    public int countItem() {
-        return item.count();
-    }
-
     public Locator itemByName(String productName) {
         return item.filter(new FilterOptions().setHasText(productName));
     }
 
     public Locator allItemName() {
-        return item.getByTestId("inventory_item_name");
+        return item.getByTestId("inventory-item-name");
     }
 
     public Locator itemName(String productName) {
-        return itemByName(productName).getByTestId("inventory_item_name");
+        return itemByName(productName).getByTestId("inventory-item-name");
     }
 
     public BigDecimal itemPrice(String productName) {

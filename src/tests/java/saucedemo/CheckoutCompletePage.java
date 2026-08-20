@@ -10,18 +10,27 @@ public class CheckoutCompletePage {
     private final Page page;
     private Locator backHomeButton;
     private Locator generatePDFOrder;
+    private Locator orderCompleteMessage;
 
     CheckoutCompletePage(Page page) {
         this.page = page;
         backHomeButton = page.getByTestId("back-to-products");
         generatePDFOrder = page.getByTestId("generate-pdf-order");
+        orderCompleteMessage = page.getByTestId("complete-header");
     }
 
-    public void downloadPDFOrder() {
+    public String downloadPDFOrder() {
         Download download = page.waitForDownload(
                 () -> generatePDFOrder.click());
 
-        download.saveAs(Path.of("target", "files", download.suggestedFilename()));
+        String fileName = download.suggestedFilename();
+        download.saveAs(Path.of("target", "files", fileName));
+
+        return fileName;
+    }
+
+    public Locator orderCompleteMessage() {
+        return orderCompleteMessage;
     }
 
 }

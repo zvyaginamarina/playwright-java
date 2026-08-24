@@ -19,14 +19,15 @@ public class CheckoutCompletePage {
         orderCompleteMessage = page.getByTestId("complete-header");
     }
 
-    public String downloadPDFOrder() {
+    public Path downloadPDFOrder() {
         Download download = page.waitForDownload(
                 () -> generatePDFOrder.click());
 
         String fileName = download.suggestedFilename();
-        download.saveAs(Path.of("target", "files", fileName));
+        Path filePath = Path.of("target", "files", fileName);
+        download.saveAs(filePath);
 
-        return fileName;
+        return filePath;
     }
 
     public Locator orderCompleteMessage() {

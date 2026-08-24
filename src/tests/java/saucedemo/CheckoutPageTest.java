@@ -1,10 +1,14 @@
 package tests.java.saucedemo;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Path;
 import java.util.regex.Pattern;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +16,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CheckoutPageTest extends SauceDemoBaseTest {
 
@@ -96,8 +98,8 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
 
         productPage.header().openCart();
 
-        BigDecimal backpackItemPrice = productPage.getItemPrice(Products.BACKPACK);
-        BigDecimal bikeLightItemPrice = productPage.getItemPrice(Products.BIKELIGHT);
+        BigDecimal backpackPrice = productPage.getItemPrice(Products.BACKPACK);
+        BigDecimal bikeLightPrice = productPage.getItemPrice(Products.BIKELIGHT);
 
         informationPage = cart.openCheckoutInformationPage();
 
@@ -107,7 +109,7 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
         BigDecimal tax = overViewPage.taxAmount();
         BigDecimal total = overViewPage.totalAmount();
 
-        BigDecimal expectedSubtotal = backpackItemPrice.add(bikeLightItemPrice);
+        BigDecimal expectedSubtotal = backpackPrice.add(bikeLightPrice);
         BigDecimal taxRatio = new BigDecimal("0.08");
         BigDecimal expectedTax = subtotal.multiply(taxRatio).setScale(2, RoundingMode.HALF_UP);
         BigDecimal expectedTotal = subtotal.add(expectedTax);
@@ -140,13 +142,92 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
 
         overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
         completePage = overViewPage.openCheckoutCompletePage();
-        String fileName = completePage.downloadPDFOrder();
-        String text = PDFExtractor.extractTextFromPdf(fileName);
+        Path filePath = completePage.downloadPDFOrder();
+        File file = filePath.toFile();
+
+        assertTrue(file.length() > 0);
+
+    }
+
+    @Test
+    @DisplayName("PDF order contains correct shipment info")
+    void correctShipmentInfoInPDFOrder() throws IOException {
+        productPage.addToCart(Products.BACKPACK);
+        productPage.header().openCart();
+        informationPage = cart.openCheckoutInformationPage();
+
+        overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
+        completePage = overViewPage.openCheckoutCompletePage();
+        Path filePath = completePage.downloadPDFOrder();
+        String text = PDFExtractor.extractTextFromPdf(filePath);
 
         assertTrue(text.contains(FIRST_NAME));
         assertTrue(text.contains(LAST_NAME));
         assertTrue(text.contains(POSTAL_CODE));
+    }
+
+    @Test
+    @DisplayName("PDF order contains correct products and price")
+    void correctProductsAndPriceInPDFOrder() throws IOException {
+        productPage.addToCart(Products.BACKPACK);
+        productPage.addToCart(Products.BIKELIGHT);
+
+        BigDecimal backpackPrice = productPage.getItemPrice(Products.BACKPACK);
+        BigDecimal bikelightPrice = productPage.getItemPrice(Products.BIKELIGHT);
+
+        productPage.header().openCart();
+        informationPage = cart.openCheckoutInformationPage();
+
+        overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
+        completePage = overViewPage.openCheckoutCompletePage();
+        Path filePath = completePage.downloadPDFOrder();
+        String text = PDFExtractor.extractTextFromPdf(filePath);
+
+        String[] splitedText = text.split("\\n");
+
+        BigDecimal backpackPriceinOrder = PDFExtractor.getValueFromString(splitedText, Products.BACKPACK);
+        BigDecimal bikelightPriceinOrder = PDFExtractor.getValueFromString(splitedText, Products.BIKELIGHT);
+
         assertTrue(text.contains(Products.BACKPACK));
+        assertTrue(text.contains(Products.BIKELIGHT));
+
+        assertEquals(0, backpackPriceinOrder.compareTo(backpackPrice),
+                "Expect " + backpackPrice + ", but got " + backpackPriceinOrder);
+        assertEquals(0, bikelightPriceinOrder.compareTo(bikelightPrice),
+                "Expect " + bikelightPrice + ", but got " + bikelightPriceinOrder);
+
+    }
+
+    @Test
+    @DisplayName("PDF order contains correct payment amounts")
+    void correctPaymentsAmountInPDFOrder() throws IOException {
+        productPage.addToCart(Products.BACKPACK);
+        productPage.addToCart(Products.BIKELIGHT);
+        productPage.header().openCart();
+        informationPage = cart.openCheckoutInformationPage();
+
+        overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
+        completePage = overViewPage.openCheckoutCompletePage();
+        Path filePath = completePage.downloadPDFOrder();
+        String text = PDFExtractor.extractTextFromPdf(filePath);
+
+        String[] splitedText = text.split("\\n");
+
+        BigDecimal backpackPrice = PDFExtractor.getValueFromString(splitedText, Products.BACKPACK);
+        BigDecimal bikelightPrice = PDFExtractor.getValueFromString(splitedText, Products.BIKELIGHT);
+        BigDecimal subtotal = PDFExtractor.getValueFromString(splitedText, "Item total");
+        BigDecimal tax = PDFExtractor.getValueFromString(splitedText, "Tax");
+        BigDecimal total = PDFExtractor.getValueFromString(splitedText, "Total");
+
+        BigDecimal expectedSubtotal = backpackPrice.add(bikelightPrice);
+        BigDecimal taxRatio = new BigDecimal("0.08");
+        BigDecimal expectedTax = subtotal.multiply(taxRatio).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal expectedTotal = subtotal.add(expectedTax);
+
+        assertEquals(0, subtotal.compareTo(expectedSubtotal), "Expect " + expectedSubtotal + ", but got " + subtotal);
+        assertEquals(0, tax.compareTo(expectedTax), "Expect " + expectedTax + ", but got " + tax);
+        assertEquals(0, total.compareTo(expectedTotal), "Expect " + expectedTotal + ", but got " + total);
+
     }
 
 }

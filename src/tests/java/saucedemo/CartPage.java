@@ -1,5 +1,7 @@
 package tests.java.saucedemo;
 
+import java.math.BigDecimal;
+
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Locator.FilterOptions;
@@ -51,9 +53,17 @@ public class CartPage {
         return itemByName(productName).getByTestId("inventory-item-name");
     }
 
+    public Locator cartItemPrice(String productName) {
+        return itemByName(productName).getByTestId("inventory-item-price");
+    }
+
     public ItemPage openItemPage(String productName) {
         itemName(productName).click();
         return new ItemPage(page);
+    }
+
+    public BigDecimal getCartItemPrice(String productName) {
+        return new BigDecimal(cartItemPrice(productName).textContent().replace("$", "").trim());
     }
 
     public CheckoutInformationPage openCheckoutInformationPage() {

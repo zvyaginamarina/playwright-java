@@ -60,24 +60,24 @@ public class ProductsPage {
                 .getByRole(AriaRole.BUTTON);
     }
 
-    public Locator sortingDropDown(Page page) {
+    public Locator sortingDropDown() {
         return page.getByTestId("product-sort-container");
     }
 
-    public void sortByNameAsc(Page page) {
-        sortingDropDown(page).selectOption("az");
+    public void sortByNameAsc() {
+        sortingDropDown().selectOption("az");
     }
 
-    public void sortByNameDesc(Page page) {
-        sortingDropDown(page).selectOption("za");
+    public void sortByNameDesc() {
+        sortingDropDown().selectOption("za");
     }
 
-    public void sortByPriceAsc(Page page) {
-        sortingDropDown(page).selectOption("lohi");
+    public void sortByPriceAsc() {
+        sortingDropDown().selectOption("lohi");
     }
 
-    public void sortByPriceDesc(Page page) {
-        sortingDropDown(page).selectOption("hilo");
+    public void sortByPriceDesc() {
+        sortingDropDown().selectOption("hilo");
     }
 
     public Locator itemByName(String productName) {

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Headers;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
@@ -29,34 +30,44 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     private static final String POSTAL_CODE = "1234";
 
     @BeforeEach
-    void login() {
+    void precondition() {
         successLogin(User.STANDARD_USER);
         cart = new CartPage(page);
+    }
+
+    void setupConditionOneProduct(String productName) {
+        productPage.addToCart(productName);
+        productPage.header().openCart();
+
+    }
+
+    void setupConditionTwoProducts(String productNameOne, String productNameTwo) {
+        productPage.addToCart(productNameOne);
+        productPage.addToCart(productNameTwo);
+        productPage.header().openCart();
     }
 
     @Test
     @DisplayName("Fill information with valid data and continue to overview page")
     void successContinueToOverwievPage() {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionOneProduct(Products.BACKPACK);
 
+        informationPage = cart.openCheckoutInformationPage();
         informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
 
         assertThat(page).hasURL(Pattern.compile(".*/checkout-step-two*"));
     }
 
-    @ParameterizedTest(name = "{4}")
+    @ParameterizedTest(name = "{3}")
     @CsvSource({
             "'',Doe,1111,Error: First Name is required",
             "John,'',1111,Error: Last Name is required",
             "John,Doe,'',Error: Postal Code is required"
     })
     void oneEmptyFieldInForm(String firstname, String lastname, String postalcode, String message) {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionOneProduct(Products.BACKPACK);
 
+        informationPage = cart.openCheckoutInformationPage();
         informationPage.sendForm(firstname, lastname, postalcode);
 
         assertThat(informationPage.errorMessage()).containsText(message);
@@ -65,10 +76,9 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Return from checkout information page to cart")
     void returnToCart() {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionOneProduct(Products.BACKPACK);
 
+        informationPage = cart.openCheckoutInformationPage();
         informationPage.returnToCart();
 
         assertThat(page).hasURL(Pattern.compile(".*/cart*"));
@@ -77,12 +87,9 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Checkout overview contains all products from cart")
     void itemsOnCheckoutOverviewPage() {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.addToCart(Products.BIKELIGHT);
-        productPage.header().openCart();
+        setupConditionTwoProducts(Products.BACKPACK, Products.BIKELIGHT);
 
         informationPage = cart.openCheckoutInformationPage();
-
         overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
 
         assertThat(overViewPage.itemName(Products.BACKPACK)).containsText(Products.BACKPACK);
@@ -93,10 +100,7 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Checkout overview contains correct payment amount")
     void paymentAmountOncheckoutOverviewPage() {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.addToCart(Products.BIKELIGHT);
-
-        productPage.header().openCart();
+        setupConditionTwoProducts(Products.BACKPACK, Products.BIKELIGHT);
 
         BigDecimal backpackPrice = productPage.getItemPrice(Products.BACKPACK);
         BigDecimal bikeLightPrice = productPage.getItemPrice(Products.BIKELIGHT);
@@ -122,10 +126,9 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Fill information with valid data and complete order")
     void successContinueToCompletePage() {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionOneProduct(Products.BACKPACK);
 
+        informationPage = cart.openCheckoutInformationPage();
         overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
         completePage = overViewPage.openCheckoutCompletePage();
 
@@ -136,26 +139,23 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("Download PDF order")
     void downloadPDFOrder() throws IOException {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionOneProduct(Products.BACKPACK);
 
+        informationPage = cart.openCheckoutInformationPage();
         overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
         completePage = overViewPage.openCheckoutCompletePage();
         Path filePath = completePage.downloadPDFOrder();
         File file = filePath.toFile();
 
         assertTrue(file.length() > 0);
-
     }
 
     @Test
     @DisplayName("PDF order contains correct shipment info")
     void correctShipmentInfoInPDFOrder() throws IOException {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionOneProduct(Products.BACKPACK);
 
+        informationPage = cart.openCheckoutInformationPage();
         overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
         completePage = overViewPage.openCheckoutCompletePage();
         Path filePath = completePage.downloadPDFOrder();
@@ -201,33 +201,133 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
     @Test
     @DisplayName("PDF order contains correct payment amounts")
     void correctPaymentsAmountInPDFOrder() throws IOException {
-        productPage.addToCart(Products.BACKPACK);
-        productPage.addToCart(Products.BIKELIGHT);
-        productPage.header().openCart();
-        informationPage = cart.openCheckoutInformationPage();
+        setupConditionTwoProducts(Products.BACKPACK, Products.BIKELIGHT);
 
+        informationPage = cart.openCheckoutInformationPage();
+        overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
+
+        BigDecimal expectedSubtotal = overViewPage.subtotalAmount();
+        BigDecimal expectedTax = overViewPage.taxAmount();
+        BigDecimal expectedTotal = overViewPage.totalAmount();
+
+        completePage = overViewPage.openCheckoutCompletePage();
+        Path filePath = completePage.downloadPDFOrder();
+        String text = PDFExtractor.extractTextFromPdf(filePath);
+        String[] splitedText = text.split("\\n");
+
+        BigDecimal subtotal = PDFExtractor.getValueFromString(splitedText, "Item total");
+        BigDecimal tax = PDFExtractor.getValueFromString(splitedText, "Tax");
+        BigDecimal total = PDFExtractor.getValueFromString(splitedText, "Total");
+
+        assertEquals(0, subtotal.compareTo(expectedSubtotal), "Expect " + expectedSubtotal + ", but got " + subtotal);
+        assertEquals(0, tax.compareTo(expectedTax), "Expect " + expectedTax + ", but got " + tax);
+        assertEquals(0, total.compareTo(expectedTotal), "Expect " + expectedTotal + ", but got " + total);
+    }
+
+    @Test
+    @DisplayName("Cart badge deleted and cart is empty after compliting order")
+    void cartBadgeDeletedAndEmptyCartAfterOrderCompete() {
+        setupConditionTwoProducts(Products.BACKPACK, Products.BIKELIGHT);
+
+        informationPage = cart.openCheckoutInformationPage();
         overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
         completePage = overViewPage.openCheckoutCompletePage();
+
+        assertThat(completePage.header().cartBadge()).not().isVisible();
+
+        completePage.header().openCart();
+        cart = new CartPage(page);
+
+        assertThat(cart.cartItem()).hasCount(0);
+    }
+
+    @Test
+    @DisplayName("Checkout E2E test")
+    void checkoutProcess() throws IOException {
+        productPage.addToCart(Products.BACKPACK);
+        productPage.addToCart(Products.BIKELIGHT);
+
+        BigDecimal backpackPriceOnProductsPage = productPage.getItemPrice(Products.BACKPACK);
+        BigDecimal bikelightPriceOnProductsPage = productPage.getItemPrice(Products.BIKELIGHT);
+
+        productPage.header().openCart();
+
+        String backpackNameOnCartPage = cart.itemName(Products.BACKPACK).textContent();
+        String bikelightNameOnCartPage = cart.itemName(Products.BIKELIGHT).textContent();
+
+        BigDecimal backpackPriceOnCartPage = cart.getCartItemPrice(Products.BACKPACK);
+        BigDecimal bikelightPriceOnCartPage = cart.getCartItemPrice(Products.BIKELIGHT);
+
+        assertEquals(Products.BACKPACK, backpackNameOnCartPage);
+        assertEquals(Products.BIKELIGHT, bikelightNameOnCartPage);
+
+        assertEquals(0, backpackPriceOnCartPage.compareTo(backpackPriceOnProductsPage),
+                "Expect " + backpackPriceOnProductsPage + ", but got " + backpackPriceOnCartPage);
+        assertEquals(0, bikelightPriceOnCartPage.compareTo(bikelightPriceOnProductsPage),
+                "Expect " + bikelightPriceOnProductsPage + ", but got " + bikelightPriceOnCartPage);
+
+        informationPage = cart.openCheckoutInformationPage();
+        overViewPage = informationPage.continueToCheckoutOverviewPage(FIRST_NAME, LAST_NAME, POSTAL_CODE);
+
+        String backpackNameOnOverviewPage = overViewPage.itemName(Products.BACKPACK).textContent();
+        String bikelightNameOnOverviewPage = overViewPage.itemName(Products.BIKELIGHT).textContent();
+
+        BigDecimal backpackPriceOnOverviewPage = overViewPage.getItemPrice(Products.BACKPACK);
+        BigDecimal bikelightPriceOnOverviewPage = overViewPage.getItemPrice(Products.BIKELIGHT);
+
+        BigDecimal subtotalOnOverviewPage = overViewPage.subtotalAmount();
+        BigDecimal taxOnOverviewPage = overViewPage.taxAmount();
+        BigDecimal totalOnOverviewPage = overViewPage.totalAmount();
+
+        BigDecimal expectedSubtotal = backpackPriceOnProductsPage.add(bikelightPriceOnProductsPage);
+        BigDecimal taxRatio = new BigDecimal("0.08");
+        BigDecimal expectedTax = subtotalOnOverviewPage.multiply(taxRatio).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal expectedTotal = subtotalOnOverviewPage.add(expectedTax);
+
+        assertEquals(Products.BACKPACK, backpackNameOnOverviewPage);
+        assertEquals(Products.BIKELIGHT, bikelightNameOnOverviewPage);
+
+        assertEquals(0, backpackPriceOnOverviewPage.compareTo(backpackPriceOnProductsPage),
+                "Expect " + backpackPriceOnProductsPage + ", but got " + backpackPriceOnOverviewPage);
+        assertEquals(0, bikelightPriceOnOverviewPage.compareTo(bikelightPriceOnProductsPage),
+                "Expect " + bikelightPriceOnProductsPage + ", but got " + bikelightPriceOnOverviewPage);
+
+        assertEquals(0, subtotalOnOverviewPage.compareTo(expectedSubtotal),
+                "Expect " + expectedSubtotal + ", but got " + subtotalOnOverviewPage);
+        assertEquals(0, taxOnOverviewPage.compareTo(expectedTax),
+                "Expect " + expectedTax + ", but got " + taxOnOverviewPage);
+        assertEquals(0, totalOnOverviewPage.compareTo(expectedTotal),
+                "Expect " + expectedTotal + ", but got " + totalOnOverviewPage);
+
+        completePage = overViewPage.openCheckoutCompletePage();
+
         Path filePath = completePage.downloadPDFOrder();
         String text = PDFExtractor.extractTextFromPdf(filePath);
 
         String[] splitedText = text.split("\\n");
 
-        BigDecimal backpackPrice = PDFExtractor.getValueFromString(splitedText, Products.BACKPACK);
-        BigDecimal bikelightPrice = PDFExtractor.getValueFromString(splitedText, Products.BIKELIGHT);
-        BigDecimal subtotal = PDFExtractor.getValueFromString(splitedText, "Item total");
-        BigDecimal tax = PDFExtractor.getValueFromString(splitedText, "Tax");
-        BigDecimal total = PDFExtractor.getValueFromString(splitedText, "Total");
+        BigDecimal backpackPriceinOrder = PDFExtractor.getValueFromString(splitedText, Products.BACKPACK);
+        BigDecimal bikelightPriceinOrder = PDFExtractor.getValueFromString(splitedText, Products.BIKELIGHT);
+        BigDecimal subtotalInOrder = PDFExtractor.getValueFromString(splitedText, "Item total");
+        BigDecimal taxInOrder = PDFExtractor.getValueFromString(splitedText, "Tax");
+        BigDecimal totalInOrder = PDFExtractor.getValueFromString(splitedText, "Total");
 
-        BigDecimal expectedSubtotal = backpackPrice.add(bikelightPrice);
-        BigDecimal taxRatio = new BigDecimal("0.08");
-        BigDecimal expectedTax = subtotal.multiply(taxRatio).setScale(2, RoundingMode.HALF_UP);
-        BigDecimal expectedTotal = subtotal.add(expectedTax);
+        assertTrue(text.contains(Products.BACKPACK));
+        assertTrue(text.contains(Products.BIKELIGHT));
 
-        assertEquals(0, subtotal.compareTo(expectedSubtotal), "Expect " + expectedSubtotal + ", but got " + subtotal);
-        assertEquals(0, tax.compareTo(expectedTax), "Expect " + expectedTax + ", but got " + tax);
-        assertEquals(0, total.compareTo(expectedTotal), "Expect " + expectedTotal + ", but got " + total);
+        assertEquals(0, backpackPriceinOrder.compareTo(backpackPriceOnProductsPage),
+                "Expect " + backpackPriceOnProductsPage + ", but got " + backpackPriceinOrder);
+        assertEquals(0, bikelightPriceinOrder.compareTo(bikelightPriceOnProductsPage),
+                "Expect " + bikelightPriceOnProductsPage + ", but got " + bikelightPriceinOrder);
 
+        assertTrue(text.contains(FIRST_NAME));
+        assertTrue(text.contains(LAST_NAME));
+        assertTrue(text.contains(POSTAL_CODE));
+
+        assertEquals(0, subtotalInOrder.compareTo(expectedSubtotal),
+                "Expect " + expectedSubtotal + ", but got " + subtotalInOrder);
+        assertEquals(0, taxInOrder.compareTo(expectedTax), "Expect " + expectedTax + ", but got " + taxInOrder);
+        assertEquals(0, totalInOrder.compareTo(expectedTotal), "Expect " + expectedTotal + ", but got " + totalInOrder);
     }
 
 }

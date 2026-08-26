@@ -26,7 +26,7 @@ public class PDFExtractor {
                 return new BigDecimal(text[i].replaceAll("[^\\d.]", ""));
             }
         }
-        return null;
+        throw new IllegalArgumentException("String starts with " + stringStartWith + " wasn't found");
 
     }
 }

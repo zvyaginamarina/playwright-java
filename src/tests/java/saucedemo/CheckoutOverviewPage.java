@@ -41,7 +41,7 @@ public class CheckoutOverviewPage {
         return itemByName(productName).getByTestId("inventory-item-name");
     }
 
-    public BigDecimal itemPrice(String productName) {
+    public BigDecimal getItemPrice(String productName) {
         return new BigDecimal(
                 itemByName(productName).getByTestId("inventory-item-price").textContent().replace("$", "").trim());
     }

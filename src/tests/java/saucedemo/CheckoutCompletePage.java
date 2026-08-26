@@ -12,11 +12,14 @@ public class CheckoutCompletePage {
     private Locator generatePDFOrder;
     private Locator orderCompleteMessage;
 
+    private HeaderComponent header;
+
     CheckoutCompletePage(Page page) {
         this.page = page;
         backHomeButton = page.getByTestId("back-to-products");
         generatePDFOrder = page.getByTestId("generate-pdf-order");
         orderCompleteMessage = page.getByTestId("complete-header");
+        header = new HeaderComponent(page.getByTestId("primary-header"));
     }
 
     public Path downloadPDFOrder() {
@@ -33,5 +36,9 @@ public class CheckoutCompletePage {
     public Locator orderCompleteMessage() {
         return orderCompleteMessage;
     }
+
+    public HeaderComponent header() {
+        return header;
+    };
 
 }

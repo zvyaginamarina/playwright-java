@@ -76,4 +76,8 @@ public class CartPage {
         return new ProductsPage(page);
     }
 
+    public Locator checkoutButton() {
+        return checkoutButton;
+    }
+
 }

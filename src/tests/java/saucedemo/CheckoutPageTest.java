@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -328,6 +329,16 @@ public class CheckoutPageTest extends SauceDemoBaseTest {
                 "Expect " + expectedSubtotal + ", but got " + subtotalInOrder);
         assertEquals(0, taxInOrder.compareTo(expectedTax), "Expect " + expectedTax + ", but got " + taxInOrder);
         assertEquals(0, totalInOrder.compareTo(expectedTotal), "Expect " + expectedTotal + ", but got " + totalInOrder);
+    }
+
+    @Disabled("Known bug: Checkout button is enabled when the cart is empty. Expected: the button is disabled. Actual: the user can complete an order with no items.")
+    @Test
+    @DisplayName("Checkout with empty cart is unavailable")
+    void checkoutWithEmptyCart() {
+        productPage.header().openCart();
+
+        assertThat(cart.cartItem()).hasCount(0);
+        assertThat(cart.checkoutButton()).not().isEnabled();
     }
 
 }

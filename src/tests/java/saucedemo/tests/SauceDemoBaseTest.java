@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.tests;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -12,6 +12,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
 import tests.java.saucedemo.config.SaucedemoConfig;
+import tests.java.saucedemo.pages.LoginPage;
+import tests.java.saucedemo.pages.ProductsPage;
+import tests.java.saucedemo.test_data.User;
 
 public class SauceDemoBaseTest {
     protected static Playwright playwright;

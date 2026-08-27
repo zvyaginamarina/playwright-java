@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.tests;
 
 import java.util.regex.Pattern;
 
@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.EnumSource;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 import tests.java.saucedemo.config.SaucedemoConfig;
+import tests.java.saucedemo.pages.LoginPage;
+import tests.java.saucedemo.test_data.User;
 
 public class LoginTest extends SauceDemoBaseTest {
 

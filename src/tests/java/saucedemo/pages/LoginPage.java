@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;

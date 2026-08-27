@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.utilities;
 
 import java.io.File;
 import java.io.IOException;

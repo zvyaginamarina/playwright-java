@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.test_data;
 
 public enum User {
     STANDARD_USER("standard_user"),

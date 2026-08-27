@@ -1,10 +1,12 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.pages;
 
 import java.nio.file.Path;
 
 import com.microsoft.playwright.Download;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+
+import tests.java.saucedemo.components.HeaderComponent;
 
 public class CheckoutCompletePage {
     private final Page page;

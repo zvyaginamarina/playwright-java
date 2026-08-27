@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.tests;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +17,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Headers;
 
+import tests.java.saucedemo.pages.CartPage;
+import tests.java.saucedemo.pages.CheckoutCompletePage;
+import tests.java.saucedemo.pages.CheckoutInformationPage;
+import tests.java.saucedemo.pages.CheckoutOverviewPage;
+import tests.java.saucedemo.test_data.Products;
+import tests.java.saucedemo.test_data.User;
+
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+
+import tests.java.saucedemo.utilities.PDFExtractor;
 
 public class CheckoutPageTest extends SauceDemoBaseTest {
 

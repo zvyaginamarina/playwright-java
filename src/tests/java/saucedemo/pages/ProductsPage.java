@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.pages;
 
 import java.math.BigDecimal;
 
@@ -6,6 +6,9 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Locator.FilterOptions;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
+
+import tests.java.saucedemo.components.HeaderComponent;
+import tests.java.saucedemo.test_data.InterfaceElements;
 
 public class ProductsPage {
 

@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.pages;
 
 import java.math.BigDecimal;
 
@@ -7,6 +7,8 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Locator.FilterOptions;
 import com.microsoft.playwright.Locator.GetByRoleOptions;
 import com.microsoft.playwright.options.AriaRole;
+
+import tests.java.saucedemo.components.HeaderComponent;
 
 public class CartPage {
     private final Page page;

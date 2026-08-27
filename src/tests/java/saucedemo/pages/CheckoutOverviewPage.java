@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.pages;
 
 import java.math.BigDecimal;
 

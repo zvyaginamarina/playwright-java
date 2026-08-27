@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.tests;
 
 import java.util.regex.Pattern;
 
@@ -7,6 +7,9 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import tests.java.saucedemo.test_data.Products;
+import tests.java.saucedemo.test_data.User;
 
 public class ProductsPageTest extends SauceDemoBaseTest {
 

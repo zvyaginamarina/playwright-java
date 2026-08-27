@@ -1,10 +1,14 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.tests;
 
 import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import tests.java.saucedemo.pages.CartPage;
+import tests.java.saucedemo.test_data.Products;
+import tests.java.saucedemo.test_data.User;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 

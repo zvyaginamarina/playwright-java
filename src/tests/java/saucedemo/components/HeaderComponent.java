@@ -1,4 +1,4 @@
-package tests.java.saucedemo;
+package tests.java.saucedemo.components;
 
 import com.microsoft.playwright.Locator;
 
